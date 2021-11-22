@@ -12,11 +12,9 @@ exports.createPost = (req, res, next) => {
   }
   const title = req.body.title;
   const body = req.body.body;
-  const date = req.body.date;
   const post = new Post({
     title: title,
-    body: body,
-    date: date
+    body: body
   });
   post
     .save()

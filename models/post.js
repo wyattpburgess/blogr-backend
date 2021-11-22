@@ -10,10 +10,6 @@ const postSchema = new Schema(
     body: {
       type: String,
       required: true
-    },
-    date: {
-      type: Date,
-      required: true
     }
   },
   { timestamps: true }
