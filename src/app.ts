@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
@@ -42,6 +43,7 @@ app.use(
 mongoose
   .connect(DB_CONNECTION_STRING)
   .then(() => {
-    app.listen(8080);
+    app.listen(process.env.PORT);
+    console.log(`App running on Port ${process.env.PORT}`);
   })
   .catch((err) => console.log(err));
