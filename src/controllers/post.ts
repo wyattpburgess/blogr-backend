@@ -1,11 +1,15 @@
-const { validationResult } = require("express-validator");
+import { Request, Response, NextFunction } from "express";
+import { validationResult } from "express-validator";
 
-const Post = require("../models/post");
+import Post from "../models/post";
+import { ResponseError } from "../interfaces";
 
-exports.createPost = (req, res, next) => {
+export const createPost = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const error = new Error("Validation failed, entered data is incorrect.");
+    const error: ResponseError = new Error(
+      "Validation failed, entered data is incorrect."
+    );
     error.statusCode = 422;
     throw error;
   }
@@ -23,7 +27,7 @@ exports.createPost = (req, res, next) => {
         post: post,
       });
     })
-    .catch((err) => {
+    .catch((err: ResponseError) => {
       if (!err.statusCode) {
         err.statusCode = 500;
       }
@@ -31,7 +35,7 @@ exports.createPost = (req, res, next) => {
     });
 };
 
-exports.getPosts = (req, res, next) => {
+export const getPosts = (req: Request, res: Response, next: NextFunction) => {
   // GET all posts in ascending order
   Post.find()
     .sort({ updatedAt: -1 })
@@ -49,7 +53,7 @@ exports.getPosts = (req, res, next) => {
     });
 };
 
-exports.getPostIds = (req, res, next) => {
+export const getPostIds = (req: Request, res: Response, next: NextFunction) => {
   Post.find({}, "_id")
     .then((ids) => {
       res.status(200).json({
@@ -65,7 +69,7 @@ exports.getPostIds = (req, res, next) => {
     });
 };
 
-exports.getPost = (req, res, next) => {
+export const getPost = (req: Request, res: Response, next: NextFunction) => {
   const postId = req.params.postId;
   Post.findById(postId)
     .then((post) => {
