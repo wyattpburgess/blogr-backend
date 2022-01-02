@@ -1,12 +1,12 @@
-const express = require("express");
-const { body } = require("express-validator");
+import { Router } from "express";
+import { body } from "express-validator";
 
-const postController = require("../controllers/post");
+import { getPosts, createPost, getPostIds, getPost } from "../controllers/post";
 
-const router = express.Router();
+const router = Router();
 
 // GET /post/posts
-router.get("/posts", postController.getPosts);
+router.get("/posts", getPosts);
 
 // POST /post/add-new
 router.post(
@@ -15,13 +15,13 @@ router.post(
     body("title").trim().isLength({ min: 5 }),
     body("body").trim().isLength({ min: 5 }),
   ],
-  postController.createPost
+  createPost
 );
 
 // GET post/post-ids
-router.get("/post-ids", postController.getPostIds);
+router.get("/post-ids", getPostIds);
 
 // GET /post/:postId
-router.get("/:postId", postController.getPost);
+router.get("/:postId", getPost);
 
-module.exports = router;
+export default router;

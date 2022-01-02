@@ -1,11 +1,18 @@
 "use strict";
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const postRoutes = require("./routes/post");
-const app = express();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const mongoose_1 = __importDefault(require("mongoose"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const post_1 = __importDefault(require("./routes/post"));
+const DB_CONNECTION_STRING = process.env.MONGODB_CONNECTION
+    ? process.env.MONGODB_CONNECTION
+    : "";
+const app = (0, express_1.default)();
 // parse application/json
-app.use(bodyParser.json({ type: "application/json" }));
+app.use(body_parser_1.default.json({ type: "application/json" }));
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, PATCH, DELETE");
@@ -13,7 +20,7 @@ app.use((req, res, next) => {
     next();
 });
 // post routes
-app.use("/post", postRoutes);
+app.use("/post", post_1.default);
 app.use((error, req, res, next) => {
     console.log(error);
     const status = error.statusCode || 500;
@@ -24,8 +31,8 @@ app.use((error, req, res, next) => {
         data: data,
     });
 });
-mongoose
-    .connect(process.env.MONGODB_CONNECTION)
+mongoose_1.default
+    .connect(DB_CONNECTION_STRING)
     .then(() => {
     app.listen(8080);
 })

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon dist/app.js"
+    "build": "tsc",
+    "start": "tsc & nodemon dist/app.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/wyattpburgess/my-blog-backend#readme",
   "dependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.6",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "express-validator": "^6.13.0",

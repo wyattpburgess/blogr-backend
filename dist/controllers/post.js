@@ -1,8 +1,13 @@
 "use strict";
-const { validationResult } = require("express-validator");
-const Post = require("../models/post");
-exports.createPost = (req, res, next) => {
-    const errors = validationResult(req);
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPost = exports.getPostIds = exports.getPosts = exports.createPost = void 0;
+const express_validator_1 = require("express-validator");
+const post_1 = __importDefault(require("../models/post"));
+const createPost = (req, res, next) => {
+    const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
         const error = new Error("Validation failed, entered data is incorrect.");
         error.statusCode = 422;
@@ -10,7 +15,7 @@ exports.createPost = (req, res, next) => {
     }
     const title = req.body.title;
     const body = req.body.body;
-    const post = new Post({
+    const post = new post_1.default({
         title: title,
         body: body,
     });
@@ -29,9 +34,10 @@ exports.createPost = (req, res, next) => {
         next(err);
     });
 };
-exports.getPosts = (req, res, next) => {
+exports.createPost = createPost;
+const getPosts = (req, res, next) => {
     // GET all posts in ascending order
-    Post.find()
+    post_1.default.find()
         .sort({ updatedAt: -1 })
         .then((posts) => {
         res.status(200).json({
@@ -46,8 +52,9 @@ exports.getPosts = (req, res, next) => {
         next(err);
     });
 };
-exports.getPostIds = (req, res, next) => {
-    Post.find({}, "_id")
+exports.getPosts = getPosts;
+const getPostIds = (req, res, next) => {
+    post_1.default.find({}, "_id")
         .then((ids) => {
         res.status(200).json({
             message: "Posts fetched successfully",
@@ -61,9 +68,10 @@ exports.getPostIds = (req, res, next) => {
         next(err);
     });
 };
-exports.getPost = (req, res, next) => {
+exports.getPostIds = getPostIds;
+const getPost = (req, res, next) => {
     const postId = req.params.postId;
-    Post.findById(postId)
+    post_1.default.findById(postId)
         .then((post) => {
         res.status(200).json({
             message: "Post fetched successfully",
@@ -77,3 +85,4 @@ exports.getPost = (req, res, next) => {
         next(err);
     });
 };
+exports.getPost = getPost;
